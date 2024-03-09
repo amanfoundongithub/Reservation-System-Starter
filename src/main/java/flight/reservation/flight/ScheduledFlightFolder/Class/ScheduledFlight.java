@@ -28,12 +28,7 @@ public class ScheduledFlight extends Flight{
         this.currentPrice = currentPrice;
     }
 
-    public int getCrewMemberCapacity() throws NoSuchFieldException {
-        if (this.aircraft instanceof AeroInterface) {
-            return ((AeroInterface) this.aircraft).getCrewMemberCapacity();
-        }
-        throw new NoSuchFieldException("this aircraft has no information about its crew capacity");
-    }
+    
 
     public void addPassengers(List<Passenger> passengers) {
         this.passengers.addAll(passengers);
@@ -42,12 +37,13 @@ public class ScheduledFlight extends Flight{
     public void removePassengers(List<Passenger> passengers) {
         this.passengers.removeAll(passengers);
     }
+    
+    public int getCrewMemberCapacity(){
+        return this.aircraft.getCrewMemberCapacity();
+    }
 
-    public int getCapacity() throws NoSuchFieldException {
-        if (this.aircraft instanceof AeroInterface) {
-            return ((AeroInterface) this.aircraft).getPassengerCapacity();
-        }
-        throw new NoSuchFieldException("this aircraft has no information about its capacity");
+    public int getCapacity(){
+        return this.aircraft.getPassengerCapacity();
     }
 
     public int getAvailableCapacity() throws NoSuchFieldException {
