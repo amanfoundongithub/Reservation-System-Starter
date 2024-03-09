@@ -6,6 +6,7 @@ import java.util.List;
 
 import flight.reservation.flight.ScheduledFlightFolder.Builder.ScheduledFlightBuilder;
 import flight.reservation.flight.ScheduledFlightFolder.Class.ScheduledFlight;
+import flight.reservation.flight.ScheduledFlightFolder.Director.ScheduledFlightDirector;
 
 
 public class Schedule {
@@ -24,7 +25,9 @@ public class Schedule {
     public void scheduleFlight(Flight flight, Date date) {
         // Call factory 
         ScheduledFlightBuilder builder = new ScheduledFlightBuilder(flight);
-        builder.setDepartureTime(date);
+        ScheduledFlightDirector director = new ScheduledFlightDirector(builder);
+        director.makeScheduledFlightBasePrice(date);
+        
 
         // Call for the scheduled flight 
         ScheduledFlight scheduledFlight = builder.build();
