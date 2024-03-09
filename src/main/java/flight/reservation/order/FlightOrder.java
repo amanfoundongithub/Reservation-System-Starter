@@ -15,6 +15,8 @@ public class FlightOrder extends Order {
     private final List<ScheduledFlight> flights;
     static List<String> noFlyList = Arrays.asList("Peter", "Johannes");
 
+    private PaymentSelector paymentSelector = new PaymentSelector();
+
     public FlightOrder(List<ScheduledFlight> flights) {
         this.flights = flights;
     }
@@ -59,9 +61,7 @@ public class FlightOrder extends Order {
             return true;
         }
         
-        PaymentSelector paymentSelector = new PaymentSelector();
         paymentSelector.setPaymentMethod(paymentStratergy);
-        
         boolean isPaid = paymentSelector.pay(getPrice());
 
         if(isPaid){

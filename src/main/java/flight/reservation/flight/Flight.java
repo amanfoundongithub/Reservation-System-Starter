@@ -28,7 +28,7 @@ public class Flight {
     private boolean isAircraftValid(Airport airport) {
         return Arrays.stream(airport.getAllowedAircrafts()).anyMatch(x -> {
             String model;
-            model = ((AeroInterface)this.aircraft).getModel();
+            model = this.aircraft.getModel();
             return x.equals(model);
             
         });

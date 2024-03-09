@@ -28,6 +28,8 @@ public class Schedule {
 
         // Call for the scheduled flight 
         ScheduledFlight scheduledFlight = builder.build();
+
+        // Add to the flights 
         scheduledFlights.add(scheduledFlight);
     }
 
