@@ -32,7 +32,7 @@ public class ValidatePassengers implements ValidationInterface{
     @Override 
     public boolean handleValidation(){
         boolean val = this.customerName.stream().noneMatch(passenger -> noFlyList.contains(passenger));
-        val = !val && this.valid;
+        val = val && this.valid;
         if(this.next == null){
             return val;
         }
