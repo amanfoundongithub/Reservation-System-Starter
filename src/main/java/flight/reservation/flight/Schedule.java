@@ -26,8 +26,7 @@ public class Schedule {
         // Call factory 
         ScheduledFlightBuilder builder = new ScheduledFlightBuilder(flight);
         ScheduledFlightDirector director = new ScheduledFlightDirector(builder);
-        director.makeScheduledFlightBasePrice(date);
-        
+        director.makeScheduledFlightWithoutPrice(date);
 
         // Call for the scheduled flight 
         ScheduledFlight scheduledFlight = builder.build();

@@ -1,6 +1,9 @@
 package flight.reservation.order;
 
-// import flight.reservation.Customer;
+import flight.reservation.Customer;
+import flight.reservation.ValidationHandlers.ConcreteHandlers.ValidateCapacity;
+import flight.reservation.ValidationHandlers.ConcreteHandlers.ValidateCustomer;
+import flight.reservation.ValidationHandlers.ConcreteHandlers.ValidatePassengers;
 import flight.reservation.flight.ScheduledFlightFolder.Class.ScheduledFlight;
 import flight.reservation.payment.Context.PaymentSelector;
 import flight.reservation.payment.Interface.PaymentStratergy;
@@ -29,20 +32,17 @@ public class FlightOrder extends Order {
         return flights;
     }
 
-    // private boolean isOrderValid(Customer customer, List<String> passengerNames, List<ScheduledFlight> flights) {
-    //     boolean valid = true;
-    //     valid = valid && !noFlyList.contains(customer.getName());
-    //     valid = valid && passengerNames.stream().noneMatch(passenger -> noFlyList.contains(passenger));
-    //     valid = valid && flights.stream().allMatch(scheduledFlight -> {
-    //         try {
-    //             return scheduledFlight.getAvailableCapacity() >= passengerNames.size();
-    //         } catch (NoSuchFieldException e) {
-    //             e.printStackTrace();
-    //             return false;
-    //         }
-    //     });
-    //     return valid;
-    // }
+    private boolean isOrderValid(Customer customer, List<String> passengerNames, List<ScheduledFlight> flights) {
+
+        ValidateCustomer   customerValidate   = new ValidateCustomer(passengerNames, customer.getName());
+        ValidatePassengers passengersValidate = new ValidatePassengers(noFlyList, passengerNames);
+        ValidateCapacity   capacityValidate   = new ValidateCapacity(passengerNames, flights);
+        
+        customerValidate.setNext(passengersValidate);
+        passengersValidate.setNext(capacityValidate);
+
+        return customerValidate.handleValidation();
+    }
 
 
     public boolean processOrderWithCreditCard(String number, Date expirationDate, String cvv) throws IllegalStateException {
@@ -57,7 +57,6 @@ public class FlightOrder extends Order {
 
     public boolean processPayment(PaymentStratergy paymentStratergy) throws IllegalStateException{
         if (isClosed()) {
-            // Payment is already proceeded
             return true;
         }
         

@@ -1,5 +1,8 @@
 package flight.reservation;
 
+import flight.reservation.ValidationHandlers.ConcreteHandlers.ValidateCapacity;
+import flight.reservation.ValidationHandlers.ConcreteHandlers.ValidateCustomer;
+import flight.reservation.ValidationHandlers.ConcreteHandlers.ValidatePassengers;
 import flight.reservation.flight.ScheduledFlightFolder.Class.ScheduledFlight;
 import flight.reservation.order.FlightOrder;
 import flight.reservation.order.Order;
@@ -38,18 +41,14 @@ public class Customer {
     }
 
     private boolean isOrderValid(List<String> passengerNames, List<ScheduledFlight> flights) {
-        boolean valid = true;
-        valid = valid && !FlightOrder.getNoFlyList().contains(this.getName());
-        valid = valid && passengerNames.stream().noneMatch(passenger -> FlightOrder.getNoFlyList().contains(passenger));
-        valid = valid && flights.stream().allMatch(scheduledFlight -> {
-            try {
-                return scheduledFlight.getAvailableCapacity() >= passengerNames.size();
-            } catch (NoSuchFieldException e) {
-                e.printStackTrace();
-                return false;
-            }
-        });
-        return valid;
+        ValidateCustomer   customerValidate   = new ValidateCustomer(passengerNames, this.getName());
+        ValidatePassengers passengersValidate = new ValidatePassengers(FlightOrder.getNoFlyList(), passengerNames);
+        ValidateCapacity   capacityValidate   = new ValidateCapacity(passengerNames, flights);
+        
+        customerValidate.setNext(passengersValidate);
+        passengersValidate.setNext(capacityValidate);
+
+        return customerValidate.handleValidation();
     }
 
     public String getEmail() {

@@ -15,7 +15,7 @@ public class ScheduledFlightDirector {
         this.builder = builder;
     }
 
-    public void makeScheduledFlightBasePrice(Date departurDate){
+    public void makeScheduledFlightWithoutPrice(Date departurDate){
         builder.buildDeparture(departurDate);
     }
 
